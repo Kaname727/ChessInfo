@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chessInfo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      width: 280px;
+      margin: 0;
+      padding: 16px;
+      font-family: 'Segoe UI', 'Yu Gothic UI', 'Hiragino Sans', sans-serif;
+      font-size: 13px;
+      color: #333;
+      background: #f8f9fa;
+    }
+    h1 {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 12px 0;
+      color: #1a1a1a;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #555;
+    }
+    textarea {
+      width: 100%;
+      min-height: 72px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font: inherit;
+      resize: vertical;
+      margin-bottom: 12px;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #5b8def;
+      box-shadow: 0 0 0 2px rgba(91, 141, 239, 0.2);
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(180deg, #5b8def, #4a7ad9);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    button:hover {
+      background: linear-gradient(180deg, #6b9dff, #5b8def);
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    .note {
+      font-size: 11px;
+      color: #888;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>表示設定</h1>
+  <label for="startDate">開始日</label>
+  <input type="date" id="startDate" style="width:100%;padding:8px 10px;margin-bottom:12px;border:1px solid #ddd;border-radius:8px;font:inherit;">
+
+  <label for="lichessUsername">Lichess ユーザー名</label>
+  <input type="text" id="lichessUsername" placeholder="例: Nakamura" style="width:100%;padding:8px 10px;margin-bottom:6px;border:1px solid #ddd;border-radius:8px;font:inherit;">
+  <label for="lichessPerf">表示するレーティング</label>
+  <select id="lichessPerf" style="width:100%;padding:8px 10px;margin-bottom:12px;border:1px solid #ddd;border-radius:8px;font:inherit;">
+    <option value="rapid">Rapid</option>
+    <option value="blitz">Blitz</option>
+    <option value="classical">Classical</option>
+    <option value="bullet">Bullet</option>
+  </select>
+
+  <label for="chesscomUsername">Chess.com ユーザー名</label>
+  <input type="text" id="chesscomUsername" placeholder="例: hikaru" style="width:100%;padding:8px 10px;margin-bottom:6px;border:1px solid #ddd;border-radius:8px;font:inherit;">
+  <label for="chesscomPerf">表示するレーティング</label>
+  <select id="chesscomPerf" style="width:100%;padding:8px 10px;margin-bottom:12px;border:1px solid #ddd;border-radius:8px;font:inherit;">
+    <option value="rapid">Rapid</option>
+    <option value="blitz">Blitz</option>
+    <option value="bullet">Bullet</option>
+    <option value="classical">Daily</option>
+  </select>
+
+  <label for="customText">メモ</label>
+  <textarea id="customText" placeholder="例: 今日やること、リマインダーなど"></textarea>
+  <button id="save">保存</button>
+  <p class="note">パネルは画面上でドラッグして移動できます。空白の項目は非表示になります。</p>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+#kikaku-clock-container {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  z-index: 2147483647;
+  font-family: 'Segoe UI', 'Yu Gothic UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+  color: #2c2c2c;
+  text-align: right;
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  padding: 0 24px 20px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.35), rgba(248, 248, 250, 0.25));
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  min-width: 200px;
+}
+
+#kikaku-clock-container .kikaku-grip {
+  pointer-events: auto;
+  cursor: move;
+  padding: 10px 0 8px;
+  margin: 0 -24px 0 0;
+  border-radius: 14px 14px 0 0;
+  text-align: center;
+}
+
+#kikaku-clock-container .kikaku-grip::after {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+}
+
+.kikaku-date {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.kikaku-time {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.kikaku-custom {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  color: #1e5aa8;
+  max-width: 280px;
+  word-break: break-word;
+  white-space: pre-wrap;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  padding-top: 10px;
+  margin-top: 6px;
+}
+
+.kikaku-lichess {
+  font-size: 13px;
+  font-weight: 500;
+  color: #2c2c2c;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  padding-top: 10px;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.kikaku-lichess-label {
+  opacity: 0.8;
+  margin-right: 4px;
+}
+
+.kikaku-lichess-value {
+  font-weight: 600;
+  color: #1e5aa8;
+}
+
+.kikaku-lichess-error {
+  color: #a04444;
+  font-size: 12px;
+}
+
+.kikaku-chesscom {
+  font-size: 13px;
+  font-weight: 500;
+  color: #2c2c2c;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  padding-top: 10px;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.kikaku-chesscom .kikaku-lichess-label,
+.kikaku-chesscom .kikaku-lichess-value,
+.kikaku-chesscom .kikaku-lichess-error {
+  font-size: inherit;
+}
