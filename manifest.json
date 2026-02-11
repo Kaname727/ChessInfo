@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "企画用",
+  "name": "ChessInfo",
   "version": "1.0.0",
-  "description": "企画に使うやつです",
+  "description": "chess.comとlichess.orgのユーザー情報を表示します",
   "permissions": ["storage"],
   "host_permissions": ["https://lichess.org/*","https://api.chess.com/*"],
   "content_scripts": [
