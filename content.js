@@ -60,6 +60,12 @@
     container.appendChild(chesscomEl);
     document.body.appendChild(container);
 
+    function setHidden(hidden) {
+      const isHidden = Boolean(hidden);
+      container.style.display = isHidden ? 'none' : 'block';
+      return isHidden;
+    }
+
     function applyPosition(pos) {
       if (pos && typeof pos.top === 'number' && typeof pos.left === 'number') {
         container.style.top = pos.top + 'px';
@@ -215,7 +221,9 @@
     update();
     setInterval(update, 1000);
 
-    chrome.storage.sync.get(['startDate', 'lichessUsername', 'lichessPerf', 'chesscomUsername', 'chesscomPerf'], function (result) {
+    chrome.storage.sync.get(['panelHidden', 'startDate', 'lichessUsername', 'lichessPerf', 'chesscomUsername', 'chesscomPerf'], function (result) {
+      const hidden = setHidden(result.panelHidden);
+      if (hidden) return;
       setDays(result.startDate || '');
       setLichess(result.lichessUsername || '', result.lichessPerf || 'rapid');
       setChesscom(result.chesscomUsername || '', result.chesscomPerf || 'rapid');
@@ -223,6 +231,16 @@
 
     chrome.storage.onChanged.addListener(function (changes, areaName) {
       if (areaName !== 'sync') return;
+      if (changes.panelHidden) {
+        const hidden = setHidden(changes.panelHidden.newValue);
+        if (hidden) return;
+        chrome.storage.sync.get(['startDate', 'lichessUsername', 'lichessPerf', 'chesscomUsername', 'chesscomPerf'], function (result) {
+          setDays(result.startDate || '');
+          setLichess(result.lichessUsername || '', result.lichessPerf || 'rapid');
+          setChesscom(result.chesscomUsername || '', result.chesscomPerf || 'rapid');
+        });
+        return;
+      }
       if (changes.startDate) setDays(changes.startDate.newValue || '');
       if (changes.lichessUsername || changes.lichessPerf) {
         chrome.storage.sync.get(['lichessUsername', 'lichessPerf'], function (r) {

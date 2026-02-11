@@ -1,4 +1,5 @@
 (function () {
+  const panelHidden = document.getElementById('panelHidden');
   const startDate = document.getElementById('startDate');
   const lichessUsername = document.getElementById('lichessUsername');
   const lichessPerf = document.getElementById('lichessPerf');
@@ -7,7 +8,8 @@
   const textarea = document.getElementById('customText');
   const saveBtn = document.getElementById('save');
 
-  chrome.storage.sync.get(['customText', 'startDate', 'lichessUsername', 'lichessPerf', 'chesscomUsername', 'chesscomPerf'], function (result) {
+  chrome.storage.sync.get(['panelHidden', 'customText', 'startDate', 'lichessUsername', 'lichessPerf', 'chesscomUsername', 'chesscomPerf'], function (result) {
+    panelHidden.checked = Boolean(result.panelHidden);
     textarea.value = result.customText || '';
     startDate.value = result.startDate || '';
     lichessUsername.value = result.lichessUsername || '';
@@ -24,6 +26,7 @@
     const chesscom = chesscomUsername.value.trim();
     const chesscomPerfVal = chesscomPerf.value || 'rapid';
     chrome.storage.sync.set({
+      panelHidden: panelHidden.checked,
       customText: customText,
       startDate: date || '',
       lichessUsername: lichess,
