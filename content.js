@@ -37,6 +37,11 @@
     grip.className = 'kikaku-grip';
     grip.title = 'ドラッグで移動';
 
+    const hideToggle = document.createElement('div');
+    hideToggle.className = 'kikaku-hide-toggle';
+    hideToggle.textContent = '−';
+    grip.appendChild(hideToggle);
+
     const dateEl = document.createElement('div');
     dateEl.className = 'kikaku-date';
 
@@ -52,17 +57,25 @@
     const chesscomEl = document.createElement('div');
     chesscomEl.className = 'kikaku-chesscom';
 
+    const resizeHandle = document.createElement('div');
+    resizeHandle.className = 'kikaku-resize';
+
     container.appendChild(grip);
     container.appendChild(dateEl);
     container.appendChild(timeEl);
     container.appendChild(daysEl);
     container.appendChild(lichessEl);
     container.appendChild(chesscomEl);
+    container.appendChild(resizeHandle);
     document.body.appendChild(container);
 
     function setHidden(hidden) {
       const isHidden = Boolean(hidden);
       container.style.display = isHidden ? 'none' : 'block';
+      // 表示中のときだけトグルの見た目を更新（非表示中はパネルごと消える）
+      if (!isHidden) {
+        hideToggle.textContent = '×';
+      }
       return isHidden;
     }
 
@@ -78,13 +91,22 @@
       }
     }
 
-    chrome.storage.local.get(['panelPosition'], function (result) {
+    function applySize(size) {
+      if (size && typeof size.width === 'number') {
+        container.style.width = size.width + 'px';
+      }
+    }
+
+    chrome.storage.local.get(['panelPosition', 'panelSize'], function (result) {
       applyPosition(result.panelPosition);
+      applySize(result.panelSize);
     });
 
     let dragStart = null;
-    grip.addEventListener('mousedown', function (e) {
+    container.addEventListener('mousedown', function (e) {
       if (e.button !== 0) return;
+      // リサイズハンドルやトグルをドラッグの対象にしない
+      if (e.target === resizeHandle || e.target === hideToggle) return;
       e.preventDefault();
       const rect = container.getBoundingClientRect();
       dragStart = { x: e.clientX - rect.left, y: e.clientY - rect.top, left: rect.left, top: rect.top };
@@ -99,10 +121,35 @@
       container.style.right = 'auto';
     });
     document.addEventListener('mouseup', function () {
-      if (!dragStart) return;
+      let changed = false;
+      if (dragStart) {
+        const rect = container.getBoundingClientRect();
+        chrome.storage.local.set({ panelPosition: { left: rect.left, top: rect.top } });
+        dragStart = null;
+        changed = true;
+      }
+      if (resizeStart) {
+        const rect = container.getBoundingClientRect();
+        chrome.storage.local.set({ panelSize: { width: rect.width } });
+        resizeStart = null;
+        changed = true;
+      }
+      if (!changed) return;
+    });
+
+    let resizeStart = null;
+    resizeHandle.addEventListener('mousedown', function (e) {
+      if (e.button !== 0) return;
+      e.preventDefault();
       const rect = container.getBoundingClientRect();
-      chrome.storage.local.set({ panelPosition: { left: rect.left, top: rect.top } });
-      dragStart = null;
+      resizeStart = { x: e.clientX, width: rect.width };
+    });
+    document.addEventListener('mousemove', function (e) {
+      if (!resizeStart) return;
+      e.preventDefault();
+      const dx = e.clientX - resizeStart.x;
+      const newWidth = Math.min(Math.max(resizeStart.width + dx, 200), 420);
+      container.style.width = newWidth + 'px';
     });
 
     function update() {
@@ -221,9 +268,20 @@
     update();
     setInterval(update, 1000);
 
+    hideToggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      chrome.storage.sync.get(['panelHidden'], function (result) {
+        const next = !Boolean(result.panelHidden);
+        chrome.storage.sync.set({ panelHidden: next });
+      });
+    });
+
     chrome.storage.sync.get(['panelHidden', 'startDate', 'lichessUsername', 'lichessPerf', 'chesscomUsername', 'chesscomPerf'], function (result) {
-      const hidden = setHidden(result.panelHidden);
-      if (hidden) return;
+      const initialHidden = result.panelHidden === undefined ? false : result.panelHidden;
+      if (result.panelHidden === undefined) {
+        chrome.storage.sync.set({ panelHidden: false });
+      }
+      setHidden(initialHidden);
       setDays(result.startDate || '');
       setLichess(result.lichessUsername || '', result.lichessPerf || 'rapid');
       setChesscom(result.chesscomUsername || '', result.chesscomPerf || 'rapid');
@@ -232,14 +290,7 @@
     chrome.storage.onChanged.addListener(function (changes, areaName) {
       if (areaName !== 'sync') return;
       if (changes.panelHidden) {
-        const hidden = setHidden(changes.panelHidden.newValue);
-        if (hidden) return;
-        chrome.storage.sync.get(['startDate', 'lichessUsername', 'lichessPerf', 'chesscomUsername', 'chesscomPerf'], function (result) {
-          setDays(result.startDate || '');
-          setLichess(result.lichessUsername || '', result.lichessPerf || 'rapid');
-          setChesscom(result.chesscomUsername || '', result.chesscomPerf || 'rapid');
-        });
-        return;
+        setHidden(changes.panelHidden.newValue);
       }
       if (changes.startDate) setDays(changes.startDate.newValue || '');
       if (changes.lichessUsername || changes.lichessPerf) {
