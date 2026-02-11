@@ -1,5 +1,4 @@
 (function () {
-  const startLabel = document.getElementById('startLabel');
   const startDate = document.getElementById('startDate');
   const lichessUsername = document.getElementById('lichessUsername');
   const lichessPerf = document.getElementById('lichessPerf');
@@ -8,9 +7,8 @@
   const textarea = document.getElementById('customText');
   const saveBtn = document.getElementById('save');
 
-  chrome.storage.sync.get(['customText', 'startLabel', 'startDate', 'lichessUsername', 'lichessPerf', 'chesscomUsername', 'chesscomPerf'], function (result) {
+  chrome.storage.sync.get(['customText', 'startDate', 'lichessUsername', 'lichessPerf', 'chesscomUsername', 'chesscomPerf'], function (result) {
     textarea.value = result.customText || '';
-    startLabel.value = result.startLabel || '';
     startDate.value = result.startDate || '';
     lichessUsername.value = result.lichessUsername || '';
     lichessPerf.value = result.lichessPerf || 'rapid';
@@ -20,7 +18,6 @@
 
   saveBtn.addEventListener('click', function () {
     const customText = textarea.value.trim();
-    const label = startLabel.value.trim();
     const date = startDate.value;
     const lichess = lichessUsername.value.trim();
     const lichessPerfVal = lichessPerf.value || 'rapid';
@@ -28,7 +25,6 @@
     const chesscomPerfVal = chesscomPerf.value || 'rapid';
     chrome.storage.sync.set({
       customText: customText,
-      startLabel: label,
       startDate: date || '',
       lichessUsername: lichess,
       lichessPerf: lichessPerfVal,
