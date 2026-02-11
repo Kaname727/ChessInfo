@@ -2,19 +2,16 @@
 
 Lichess と Chess.com のレーティングを、閲覧中のページ右上に常時表示する Chrome 拡張です。  
 時計や日付、経過日数メモと一緒に、対局指標を一目で確認できます。
+readmeはcodexに書かせました
+youtubeの企画のために作成しました
 
 ---
 
 ## コンセプト
-
-この拡張の主役は **レーティングの可視化** です。  
 Lichess / Chess.com のユーザー名を設定しておけば、Web 閲覧中のどのページでも現在の指標をすぐに参照できます。
 
 - Lichess: Rapid / Blitz / Classical / Bullet
 - Chess.com: Rapid / Blitz / Bullet / Daily
-
-加えて、時刻・日付・任意メモ（経過日数表示）を同じパネルで管理できるため、
-「作業中の情報ダッシュボード」として使える設計になっています。
 
 ---
 
@@ -29,18 +26,6 @@ Lichess / Chess.com のユーザー名を設定しておけば、Web 閲覧中�
 - ユーザー名を指定してレートを取得
 - 表示対象（Rapid / Blitz / Bullet / Daily）を選択可能
 - 選択レート、対局数、勝率を表示
-
-### 3. 情報パネル
-- 日付（曜日付き）
-- 時刻（1 秒ごとに更新）
-- 任意メモ表示
-- 開始日からの経過日数表示（`○ 日目`）
-
-### 4. UI 操作
-- パネルのドラッグ移動
-- 位置情報の保存
-- 空欄項目の自動非表示
-
 ---
 
 ## セットアップ
@@ -70,16 +55,6 @@ Lichess / Chess.com のユーザー名を設定しておけば、Web 閲覧中�
 - Chess.com: `https://api.chess.com/pub/player/{username}/stats`
 - 一定時間キャッシュして API 呼び出しを抑制
 - ユーザー未設定時は該当ブロックを非表示
-
----
-
-## Features
-
-- `manifest.json` : 拡張設定と権限
-- `content.js` : パネル描画・時刻更新・レーティング取得
-- `content.css` : オーバーレイのスタイル
-- `popup.html` : ユーザー名・表示項目の設定 UI
-- `popup.js` : 設定値の保存処理
 
 ---
 
