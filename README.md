@@ -73,7 +73,7 @@ Lichess / Chess.com のユーザー名を設定しておけば、Web 閲覧中�
 
 ---
 
-## ファイル構成
+## Features
 
 - `manifest.json` : 拡張設定と権限
 - `content.js` : パネル描画・時刻更新・レーティング取得
