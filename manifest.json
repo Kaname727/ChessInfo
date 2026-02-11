@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "企画用",
+  "version": "1.0.0",
+  "description": "企画に使うやつです",
+  "permissions": ["storage"],
+  "host_permissions": ["https://lichess.org/*","https://api.chess.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
